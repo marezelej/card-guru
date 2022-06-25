@@ -103,17 +103,35 @@ export default {
           if (lastIndex < 0) {
             return
           }
-          const feeInfo = parts.find((str) => str.match(/\d{2}\/\d{2}/) !== null)
+          const feeInfo = this.getFeeInfo(parts)
           this.addItem(
             parts.slice(1, lastIndex).join(' '),
             moment(parts[0], 'DD.MM.YY').toDate(),
             source,
             getNumber(parts[lastIndex]),
-            feeInfo? parseInt(feeInfo.slice(3)) : 1,
-            feeInfo? parseInt(feeInfo.slice(3, 5)) : 1
+            feeInfo.feeNumber,
+            feeInfo.totalFees
           )
         }
       })
+    },
+    getFeeInfo(parts) {
+      let feeNumber = 1
+      let totalFees = 1
+      const feeInfo = parts.find((str) => str.match(/\d{2}\/\d{2}/) !== null || str.match(/\d{1,2}-\d{2}/) !== null)
+      if (feeInfo) {
+        if (feeInfo.length === 4) {
+          feeNumber = parseInt(feeInfo.slice(0, 2))
+          totalFees = parseInt(feeInfo.slice(2, 4))
+        } else if (feeInfo.length === 5) {
+          feeNumber = parseInt(feeInfo.slice(0, 3))
+          totalFees = parseInt(feeInfo.slice(3, 5))
+        }
+      }
+      return {
+        feeNumber,
+        totalFees
+      }
     },
     addItem(title, date, account, amountArs, feeNumber, totalFees, action = 'push') {
       const item = {title, date, period: this.period, account, amountArs, feeNumber, totalFees}

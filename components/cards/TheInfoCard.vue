@@ -1,11 +1,11 @@
 <template>
-  <v-card v-bind="$attrs" :color="account.color">
+  <v-card v-bind="$attrs" :color="color">
     <v-card-title class="pb-0">
-      {{ account.title }}
+      {{ title }}
     </v-card-title>
     <v-card-text>
       <div class="mx-0 text-subtitle-2">
-        AR$ {{ account.totalArs.toFixed(2) }} / % {{ account.quote.toFixed(2) }}
+        <slot/>
       </div>
     </v-card-text>
   </v-card>
@@ -14,8 +14,12 @@
 <script>
 export default {
   props: {
-    account: {
-      type: Object,
+    title: {
+      type: String,
+      required: true
+    },
+    color: {
+      type: String,
       required: true
     }
   },

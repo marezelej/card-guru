@@ -9,7 +9,7 @@
       <MonthlyView :date="today"/>
     </v-col>
     <v-col cols="12" sm="8" md="6">
-      <NextMonthsView />
+      <NextMonthsView :date="today" :n-months="8"/>
     </v-col>
   </v-row>
 </template>

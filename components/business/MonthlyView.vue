@@ -4,20 +4,23 @@
       Compromisos mensuales
     </v-card-title>
     <v-card-text>
-      <AccountCard
+      <TheInfoCard
         v-for="account in accounts"
         :key="'account_' + account.id"
-        :account="account"
-      />
+        :title="account.title"
+        :color="account.color"
+      >
+        AR$ {{ account.totalArs.toFixed(2) }} / % {{ account.quote.toFixed(2) }}
+      </TheInfoCard>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
 import moment from "moment";
-import AccountCard from "~/components/cards/AccountCard";
+import TheInfoCard from "~/components/cards/TheInfoCard";
 export default {
-  components: {AccountCard},
+  components: {TheInfoCard},
   props: {
     date: {
       type: String,
