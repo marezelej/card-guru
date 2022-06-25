@@ -1,12 +1,12 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center">
     <v-col cols="12">
       <v-form>
         <TheDateInput v-model="today" :clearable="false" />
       </v-form>
     </v-col>
     <v-col cols="12" sm="8" md="6">
-      <MonthlyView />
+      <MonthlyView :date="today"/>
     </v-col>
     <v-col cols="12" sm="8" md="6">
       <NextMonthsView />
@@ -24,7 +24,7 @@ export default {
   components: {TheDateInput, NextMonthsView, MonthlyView},
   data() {
     return {
-        today: moment().format('y-MM-DD')
+        today: moment().subtract(1, 'month').format('y-MM-DD')
     }
   }
 }

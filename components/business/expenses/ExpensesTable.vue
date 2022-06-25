@@ -8,6 +8,15 @@
     <template #[`item.date`]="{ item }">
       {{ formatDate(item.date) }}
     </template>
+    <template #[`item.period`]="{ item }">
+      {{ formatPeriod(item.period) }}
+    </template>
+    <template #[`item.amountArs`]="{ item }">
+      {{ item.amountArs < 0? '-$' + (-1 * item.amountArs).toFixed(2) : '$' + item.amountArs.toFixed(2) }}
+    </template>
+    <template #[`item.feeInfo`]="{ item }">
+      {{ item.feeNumber }} / {{ item.totalFees }}
+    </template>
   </TheFilterTable>
 </template>
 
@@ -38,12 +47,16 @@ export default {
           value: 'date',
         },
         {
+          text: this.$t('Period'),
+          value: 'period',
+        },
+        {
           text: this.$t('Amount (AR$)'),
           value: 'amountArs',
         },
         {
-          text: this.$t('Fee number'),
-          value: 'feeNumber',
+          text: this.$t('Fees'),
+          value: 'feeInfo',
         },
       ]
     }

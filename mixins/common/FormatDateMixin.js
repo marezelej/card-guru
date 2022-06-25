@@ -2,12 +2,10 @@ import moment from 'moment'
 export default {
   methods: {
     formatDate (date) {
-      return moment(date).format('DD/MM/YYYY')
+      return moment(date).format('YYYY/MM/DD')
     },
-    formatDatePeriod (date) {
-      const periodMonth = moment(date).format('MM')
-      const periodYear = moment(date).format('YYYY')
-      return `${periodMonth}/${periodYear}`
+    formatPeriod (date) {
+      return moment(date).format('YYYY/MM')
     },
     isPast (dateString) {
       const rawDate = moment(dateString.replaceAll('/', '-'), 'DD/MM/YYYY').format('YYYY/MM/DD')
