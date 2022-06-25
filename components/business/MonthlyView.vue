@@ -9,6 +9,7 @@
         :key="'account_' + account.id"
         :title="account.title"
         :color="account.color"
+        class="mb-1"
       >
         AR$ {{ account.totalArs.toFixed(2) }} / % {{ account.quote.toFixed(2) }}
       </TheInfoCard>
@@ -46,6 +47,13 @@ export default {
       Object.values(accounts).forEach(account => {
         account.quote = account.totalArs * 100 / totalArs
       })
+      accounts.sum = {
+        id: 'SUM',
+        title: 'TOTAL',
+        color: 'secondary',
+        totalArs,
+        quote: 100.00,
+      }
       return Object.values(accounts)
     }
   }
