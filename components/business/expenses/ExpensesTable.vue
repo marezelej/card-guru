@@ -39,7 +39,7 @@ export default {
           value: 'title',
         },
         {
-          text: this.$t('Source'),
+          text: this.$t('Account'),
           value: 'account.title',
         },
         {
