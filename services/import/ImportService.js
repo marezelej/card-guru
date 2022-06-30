@@ -12,11 +12,7 @@ export default class ImportService {
     if (!adapter) {
       throw new MissingAdapterError("No adapter was match")
     }
-    adapter.beforeImport(lines)
-    for (const line of lines) {
-      adapter.import(line)
-    }
-    adapter.afterImport(lines)
+    adapter.runImport(lines)
     return adapter.getItems()
   }
 }

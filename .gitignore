@@ -90,3 +90,4 @@ sw.*
 *.swp
 
 .components.gen.js
+/test/services/adapters/resources/

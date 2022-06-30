@@ -1,7 +1,13 @@
 export default class ImportAdapter {
-  account = {}
+  account = {id: null, title: null, color: 'primary'}
   period = null
   items = []
+
+  runImport(lines) {
+    this.beforeImport(lines)
+    lines.forEach(line => this.import(line))
+    this.afterImport(lines)
+  }
 
   canImport(lines) { return false }
   beforeImport(lines) {}
