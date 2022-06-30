@@ -8,13 +8,18 @@ export default class VisaImportAdapter extends ImportAdapter {
   canImport(lines) {
     for (const line of lines) {
       if (line.includes('Galicia Visa Platinum')) {
-        this.account.id = 'Galicia-Visa-Platinum'
-        this.account.title = 'Galicia Visa Platinum'
+        this.account.id = 'GALICIA-VISA-PLATINUM'
+        this.account.title = 'Galicia (Visa Platinum)'
         return true
       }
       if (line.includes('BANCO ENTRE RIOS')) {
         this.account.id = 'BANCO-ENTRE-RIOS'
         this.account.title = 'BERSA'
+        return true
+      }
+      if (line.includes('HIPOTECARIO')) {
+        this.account.id = 'HIPOTECARIO-VISA'
+        this.account.title = 'Hipotecario (Visa)'
         return true
       }
     }
