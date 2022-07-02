@@ -9,8 +9,7 @@ describe('When using GaliciaLines', () => {
     const adapter = new VisaImportAdapter()
 
     expect(adapter.canImport(GaliciaLines)).toBe(true)
-    adapter.runImport(GaliciaLines)
-    const items = adapter.getItems()
+    const items = adapter.runImport(GaliciaLines)
 
     expect(items).toHaveLength(28)
     expect(items.reduce((sum, item) => sum + item.amountArs, 0).toFixed(2)).toBe('55742.88')
@@ -26,8 +25,7 @@ describe('When using BersaLines', () => {
     const adapter = new VisaImportAdapter()
 
     expect(adapter.canImport(BersaLines)).toBe(true)
-    adapter.runImport(BersaLines)
-    const items = adapter.getItems()
+    const items = adapter.runImport(BersaLines)
 
     expect(items).toHaveLength(14)
     expect(items.reduce((sum, item) => sum + item.amountArs, 0).toFixed(2)).toBe('41687.88')
@@ -43,8 +41,7 @@ describe('When using HipotecarioLines', () => {
     const adapter = new VisaImportAdapter()
 
     expect(adapter.canImport(HipotecarioLines)).toBe(true)
-    adapter.runImport(HipotecarioLines)
-    const items = adapter.getItems()
+    const items = adapter.runImport(HipotecarioLines)
 
     expect(items).toHaveLength(23)
     expect(items.reduce((sum, item) => sum + item.amountArs, 0).toFixed(2)).toBe('36834.09')

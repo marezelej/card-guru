@@ -7,6 +7,7 @@ export default class ImportAdapter {
     this.beforeImport(lines)
     lines.forEach(line => this.import(line))
     this.afterImport(lines)
+    return this.getItems()
   }
 
   canImport(lines) { return false }

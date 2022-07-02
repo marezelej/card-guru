@@ -30,5 +30,8 @@ export function getDate(str) {
   if (str.match(/\d{2}\/\d{2}\/\d{4}/) !== null) {
     return moment(str, 'DD/MM/YYYY')
   }
+  if (str.match(/\d{2} [A-Za-z]{3} \d{2}/) !== null) {
+    return moment(str, 'DD MMM YY')
+  }
   return moment(str)
 }
