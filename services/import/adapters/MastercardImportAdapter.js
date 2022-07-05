@@ -24,6 +24,10 @@ export default class MastercardImportAdapter extends ImportAdapter {
   import(line) {
     const parts = line.split(' ')
     let lastIndex = parts.length - 1
+    if (parts.slice(0, 2).join(' ') === 'PAGO MINIMO') {
+      this.setPeriodMinArs(parts[2])
+      return
+    }
     if (parts.slice(0, 4).join(' ') === 'Estado de Cuenta al:') {
       this.setPeriod(parts[4])
       return

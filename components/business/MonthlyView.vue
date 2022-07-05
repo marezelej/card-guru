@@ -34,20 +34,17 @@ export default {
       const today = moment(this.date).format('YYYY-MM')
       const accounts = {}
       let totalArs = 0
-      let totalMinArs = 0
       this.$store.state.expenses.list
         .filter(expense => moment(expense.period.date).format('YYYY-MM') === today)
         .forEach(expense => {
           accounts[expense.account.id] = accounts[expense.account.id] || {
             ...expense.account,
             totalArs: 0,
-            totalMinArs: 0,
+            totalMinArs: expense.period.minArs,
             quote: 0,
           }
           accounts[expense.account.id].totalArs += expense.amountArs
-          accounts[expense.account.id].totalMinArs += 0
           totalArs += expense.amountArs
-          totalMinArs += 0
         })
       Object.values(accounts).forEach(account => {
         account.quote = account.totalArs * 100 / totalArs
@@ -58,7 +55,7 @@ export default {
         title: 'TOTAL',
         color: 'secondary',
         totalArs,
-        totalMinArs,
+        totalMinArs: result.reduce((sum, account) => sum + account.totalMinArs, 0),
         quote: 100.00,
       })
       return result

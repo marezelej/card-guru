@@ -1,5 +1,5 @@
 import moment from "moment";
-import {getDate} from "~/services/import/adapters/utils";
+import {getDate, getNumber} from "~/services/import/adapters/utils";
 
 export default class ImportAdapter {
   account = {id: null, title: null, color: 'primary'}
@@ -27,8 +27,8 @@ export default class ImportAdapter {
     this.period.date = getDate(strDate).toDate()
   }
 
-  setPeriodMinArs(minArs) {
-    this.period.minArs = minArs
+  setPeriodMinArs(strMinArs) {
+    this.period.minArs = getNumber(strMinArs)
   }
 
   pushItem(title, date, amountArs, feeNumber, totalFees) {
@@ -42,7 +42,7 @@ export default class ImportAdapter {
   }
 
   getItem(item) {
-    item.id = item.title + '-' + item.account.id + '-' + moment(item.date).format('YYYY-MM-DD')
+    item.id = item.title + '-' + item.account.id + '-' + moment(item.date).format('YYYY-MM-DD') + '-' + item.period.id
     return item;
   }
 }

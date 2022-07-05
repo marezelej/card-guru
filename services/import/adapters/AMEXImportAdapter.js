@@ -34,6 +34,10 @@ export default class AMEXImportAdapter extends ImportAdapter {
       this.previousBalanceArs -= getNumber(parts[5])
       return
     }
+    if (parts.slice(0, 8).join(' ') === 'Express Plan. Abonando el pago mínimo de $') {
+      this.setPeriodMinArs(parts[8])
+      return
+    }
     let dateFormat = null
     if (parts[0].match(/\d{2}\.\d{2}\.\d{4}/) !== null) {
       dateFormat = 'DD.MM.YYYY'

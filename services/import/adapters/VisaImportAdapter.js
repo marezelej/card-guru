@@ -33,6 +33,14 @@ export default class VisaImportAdapter extends ImportAdapter {
       this.setPeriod(strDate)
       return
     }
+    if (line.includes('PAGO MINIMO: $ ')) {
+      this.setPeriodMinArs(parts[lastIndex])
+      return
+    }
+    if (parts.slice(0, 3).join(' ') === 'PAGO MINIMO $') {
+      this.setPeriodMinArs(parts[3])
+      return
+    }
     if (parts.slice(0, 2).join(' ') === 'SALDO ANTERIOR') {
       this.previousBalanceArs += getNumber(parts[2])
       return

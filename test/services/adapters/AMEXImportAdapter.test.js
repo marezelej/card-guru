@@ -13,6 +13,7 @@ describe('When using AMEXRebankingLines', () => {
     expect(items.reduce((sum, item) => sum + item.amountArs, 0).toFixed(2)).toBe('30012.51')
     items.forEach(item => {
       expect(moment(item.period.date).format("YYYY-MM-DD")).toBe('2022-05-19')
+      expect(item.period.minArs).toBe(10413)
       expect(item.account.id).toBe('REBANKING-AMEX')
     })
   })

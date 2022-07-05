@@ -13,6 +13,7 @@ describe('When using MastercardLines', () => {
     expect(items.reduce((sum, item) => sum + item.amountArs, 0).toFixed(2)).toBe('82611.67')
     items.forEach(item => {
       expect(moment(item.period.date).format("YYYY-MM-DD")).toBe('2022-05-26')
+      expect(item.period.minArs).toBe(38590)
       expect(item.account.id).toBe('GALICIA-MASTERCARD-PLATINUM')
     })
   })
