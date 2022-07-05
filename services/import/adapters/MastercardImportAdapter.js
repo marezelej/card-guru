@@ -1,8 +1,7 @@
 import moment from "moment";
-import {getDate, getFeeInfo, getNumber} from "./utils"
+import {getFeeInfo, getNumber} from "./utils"
 import ImportAdapter from "~/services/import/ImportAdapter";
 export default class MastercardImportAdapter extends ImportAdapter {
-  account = {id: 'MASTERCARD', title: 'MASTERCARD', color: 'primary'}
   previousBalanceArs = 0
   processMonthDetails = false
   finalConcepts = [
@@ -22,19 +21,11 @@ export default class MastercardImportAdapter extends ImportAdapter {
     return false
   }
 
-  beforeImport(lines) {
-    lines.forEach(line => {
-      if (line.match(/\d{2} [A-Za-z]{3} \d{2}/) !== null) {
-        this.period = getDate(line).toDate()
-      }
-    })
-  }
-
   import(line) {
     const parts = line.split(' ')
     let lastIndex = parts.length - 1
     if (parts.slice(0, 4).join(' ') === 'Estado de Cuenta al:') {
-      this.period = getDate(parts[4]).toDate()
+      this.setPeriod(parts[4])
       return
     }
     if (parts.slice(0, 2).join(' ') === 'SALDO PENDIENTE') {
@@ -87,7 +78,7 @@ export default class MastercardImportAdapter extends ImportAdapter {
   afterImport(lines) {
     this.unshiftItem(
       'Balance anterior',
-      this.period,
+      this.period.date,
       parseFloat(this.previousBalanceArs.toFixed(2)),
       1,
       1

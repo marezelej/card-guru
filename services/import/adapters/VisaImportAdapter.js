@@ -1,8 +1,7 @@
 import moment from "moment";
-import {getDate, getFeeInfo, getNumber} from "./utils"
+import { getFeeInfo, getNumber} from "./utils"
 import ImportAdapter from "~/services/import/ImportAdapter";
 export default class VisaImportAdapter extends ImportAdapter {
-  account = {id: 'VISA', title: 'VISA', color: 'primary'}
   previousBalanceArs = 0
 
   canImport(lines) {
@@ -29,9 +28,9 @@ export default class VisaImportAdapter extends ImportAdapter {
   import(line) {
     const parts = line.split(' ')
     let lastIndex = parts.length - 1
-    if (line.includes('CIERRE ACTUAL: ') && !this.period) {
+    if (line.includes('CIERRE ACTUAL: ') && !this.period.id) {
       const strDate = line.substr(line.lastIndexOf('CIERRE ACTUAL: ') + 'CIERRE ACTUAL: '.length)
-      this.period = getDate(strDate).toDate()
+      this.setPeriod(strDate)
       return
     }
     if (parts.slice(0, 2).join(' ') === 'SALDO ANTERIOR') {
@@ -74,7 +73,7 @@ export default class VisaImportAdapter extends ImportAdapter {
   afterImport(lines) {
     this.unshiftItem(
       'Balance anterior',
-      this.period,
+      this.period.date,
       parseFloat(this.previousBalanceArs.toFixed(2)),
       1,
       1

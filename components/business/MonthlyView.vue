@@ -36,7 +36,7 @@ export default {
       let totalArs = 0
       let totalMinArs = 0
       this.$store.state.expenses.list
-        .filter(expense => moment(expense.period).format('YYYY-MM') === today)
+        .filter(expense => moment(expense.period.date).format('YYYY-MM') === today)
         .forEach(expense => {
           accounts[expense.account.id] = accounts[expense.account.id] || {
             ...expense.account,

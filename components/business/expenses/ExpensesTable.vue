@@ -9,7 +9,7 @@
       {{ formatDate(item.date) }}
     </template>
     <template #[`item.period`]="{ item }">
-      {{ formatPeriod(item.period) }}
+      {{ formatPeriod(item.period.date) }}
     </template>
     <template #[`item.amountArs`]="{ item }">
       {{ item.amountArs < 0? '-$' + (-1 * item.amountArs).toFixed(2) : '$' + item.amountArs.toFixed(2) }}

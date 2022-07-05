@@ -1,8 +1,9 @@
 import moment from "moment";
+import {getDate} from "~/services/import/adapters/utils";
 
 export default class ImportAdapter {
   account = {id: null, title: null, color: 'primary'}
-  period = null
+  period = {id: null, date: null, minArs: 0}
   items = []
 
   runImport(lines) {
@@ -19,6 +20,15 @@ export default class ImportAdapter {
 
   getItems() {
     return this.items
+  }
+
+  setPeriod(strDate) {
+    this.period.id = getDate(strDate).format('YYYY-MM')
+    this.period.date = getDate(strDate).toDate()
+  }
+
+  setPeriodMinArs(minArs) {
+    this.period.minArs = minArs
   }
 
   pushItem(title, date, amountArs, feeNumber, totalFees) {

@@ -1,8 +1,7 @@
 import moment from "moment";
-import {getDate, getFeeInfo, getNumber} from "./utils"
+import {getFeeInfo, getNumber} from "./utils"
 import ImportAdapter from "~/services/import/ImportAdapter";
 export default class AMEXImportAdapter extends ImportAdapter {
-  account = {id: 'AMEX', title: 'AMEX', color: 'primary'}
   previousBalanceArs = 0
 
   canImport(lines) {
@@ -19,7 +18,7 @@ export default class AMEXImportAdapter extends ImportAdapter {
   beforeImport(lines) {
     lines.forEach(line => {
       if (line.match(/\d{2} [A-Za-z]{3} \d{2}/) !== null) {
-        this.period = getDate(line).toDate()
+        this.setPeriod(line)
       }
     })
   }
@@ -60,7 +59,7 @@ export default class AMEXImportAdapter extends ImportAdapter {
   afterImport(lines) {
     this.unshiftItem(
       'Balance anterior',
-      this.period,
+      this.period.date,
       parseFloat(this.previousBalanceArs.toFixed(2)),
       1,
       1

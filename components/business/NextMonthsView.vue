@@ -35,7 +35,7 @@ export default {
     periodExpenses() {
       const periodKey = moment(this.date).format('YYYY-MM')
       return this.$store.state.expenses.list
-        .filter(expense => moment(expense.period).format('YYYY-MM') === periodKey)
+        .filter(expense => moment(expense.period.date).format('YYYY-MM') === periodKey)
     },
     months() {
       const month = moment(this.date).startOf('month')
@@ -59,7 +59,7 @@ export default {
       return this.periodExpenses
         .filter(expense => {
           const remainingFees = expense.totalFees - expense.feeNumber + 1
-          const lastPeriod = moment(expense.period).startOf('month').add(remainingFees, 'months')
+          const lastPeriod = moment(expense.period.date).startOf('month').add(remainingFees, 'months')
           return lastPeriod.isAfter(month)
         })
         .reduce((sum, expense) => sum + expense.amountArs, 0)
