@@ -15,7 +15,7 @@ export default class MastercardImportAdapter extends ImportAdapter {
     for (const line of lines) {
       if (line === 'MASTERCARD PLATINUM') {
         this.account.id = 'GALICIA-MASTERCARD-PLATINUM'
-        this.account.title = 'Galicia (MASTERCARD PLATINUM)'
+        this.account.title = 'Galicia (Mastercard Platinum)'
         return true
       }
     }
