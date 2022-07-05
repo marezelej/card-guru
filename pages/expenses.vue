@@ -22,5 +22,8 @@ import ExpensesImport from "~/components/business/expenses/ExpensesImport";
 export default {
   name: 'ExpensesPage',
   components: {ExpensesTable, ExpensesImport},
+  mounted() {
+    this.$store.commit('expenses/load')
+  }
 }
 </script>

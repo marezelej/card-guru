@@ -62,6 +62,12 @@ export default {
       this.log('Imported LINES:', lines)
       const items = service.import(lines)
       this.log('Imported ITEMS:', items)
+      for (const item of items) {
+        if (this.$store.state.expenses.list.find(expense => expense.id === item.id)) {
+          alert(this.$t('Some items are already loaded!'))
+          return
+        }
+      }
       this.$store.commit('expenses/add', items)
     },
     log(msg, payload) {

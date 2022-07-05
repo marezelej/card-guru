@@ -26,6 +26,9 @@ export default {
     return {
         today: moment().subtract(1, 'month').format('y-MM-DD')
     }
+  },
+  mounted() {
+    this.$store.commit('expenses/load')
   }
 }
 </script>

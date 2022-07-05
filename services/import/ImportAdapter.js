@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default class ImportAdapter {
   account = {id: null, title: null, color: 'primary'}
   period = null
@@ -21,11 +23,16 @@ export default class ImportAdapter {
 
   pushItem(title, date, amountArs, feeNumber, totalFees) {
     const item = {title, date, account: this.account, period: this.period, amountArs, feeNumber, totalFees}
-    this.items.push(item)
+    this.items.push(this.getItem(item))
   }
 
   unshiftItem(title, date, amountArs, feeNumber, totalFees) {
     const item = {title, date, account: this.account, period: this.period, amountArs, feeNumber, totalFees}
-    this.items.unshift(item)
+    this.items.unshift(this.getItem(item))
+  }
+
+  getItem(item) {
+    item.id = item.title + '-' + item.account.id + '-' + moment(item.date).format('YYYY-MM-DD')
+    return item;
   }
 }
