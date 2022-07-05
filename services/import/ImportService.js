@@ -1,9 +1,13 @@
 import VisaImportAdapter from "~/services/import/adapters/VisaImportAdapter";
+import AMEXImportAdapter from "~/services/import/adapters/AMEXImportAdapter";
+import MastercardImportAdapter from "~/services/import/adapters/MastercardImportAdapter";
 
 export default class ImportService {
   getAdapters() {
     return [
-      new VisaImportAdapter()
+      new VisaImportAdapter(),
+      new AMEXImportAdapter(),
+      new MastercardImportAdapter(),
     ]
   }
 

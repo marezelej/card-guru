@@ -48,6 +48,7 @@ export default {
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i)
         const content = await page.getTextContent()
+        this.log('Imported page: ' + i, content)
         content.items.forEach((item) => {
           text += item.str
           if (item.hasEOL) {
@@ -55,6 +56,8 @@ export default {
             text = ''
           }
         })
+        lines.push(text)
+        text = ''
       }
       this.log('Imported LINES:', lines)
       const items = service.import(lines)
