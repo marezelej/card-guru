@@ -11,7 +11,7 @@
         :color="account.color"
         class="mb-1"
       >
-        AR$ {{ account.totalArs.toFixed(2) }} / % {{ account.quote.toFixed(2) }}
+        MIN. $ {{ account.totalMinArs.toFixed(2) }} / TOTAL AR$ {{ account.totalArs.toFixed(2) }} (% {{ account.quote.toFixed(2) }})
       </TheInfoCard>
     </v-card-text>
   </v-card>
@@ -19,6 +19,7 @@
 
 <script>
 import moment from "moment";
+import {orderBy} from "lodash";
 import TheInfoCard from "~/components/cards/TheInfoCard";
 export default {
   components: {TheInfoCard},
@@ -33,28 +34,34 @@ export default {
       const today = moment(this.date).format('YYYY-MM')
       const accounts = {}
       let totalArs = 0
+      let totalMinArs = 0
       this.$store.state.expenses.list
         .filter(expense => moment(expense.period).format('YYYY-MM') === today)
         .forEach(expense => {
           accounts[expense.account.id] = accounts[expense.account.id] || {
             ...expense.account,
             totalArs: 0,
+            totalMinArs: 0,
             quote: 0,
           }
           accounts[expense.account.id].totalArs += expense.amountArs
+          accounts[expense.account.id].totalMinArs += 0
           totalArs += expense.amountArs
+          totalMinArs += 0
         })
       Object.values(accounts).forEach(account => {
         account.quote = account.totalArs * 100 / totalArs
       })
-      accounts.sum = {
+      const result = orderBy(Object.values(accounts), ['quote'], ['desc'])
+      result.push({
         id: 'SUM',
         title: 'TOTAL',
         color: 'secondary',
         totalArs,
+        totalMinArs,
         quote: 100.00,
-      }
-      return Object.values(accounts)
+      })
+      return result
     }
   }
 }

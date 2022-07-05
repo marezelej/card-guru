@@ -1,8 +1,9 @@
 <template>
   <v-file-input
-    v-model="file"
-    :loading="loading"
+    v-model="files"
+    :loading="loading > 0"
     :label="$t('Load expenses file')"
+    multiple
     @change="loadFile"
   />
 </template>
@@ -13,32 +14,31 @@ export default {
   name: 'ExpensesImport',
   data() {
     return {
-      loading: false,
-      file: null,
+      loading: 0,
+      files: [],
       enableLog: true
     }
   },
   methods: {
     loadFile() {
-      if (!this.file) {
-        return
+      for (const file of this.files) {
+        const reader = new FileReader();
+        this.loading++
+        reader.onload = (e) => {
+          const pdfParser = window['pdfjs-dist/build/pdf']
+          const loadingTask = pdfParser.getDocument({data: e.target.result})
+          loadingTask.promise.then((pdf) => {
+            this.importData(pdf)
+          }).catch((e) => {
+            this.log('Import ERROR:', { e })
+            alert('Unexpected error, please retry...')
+          }).finally(() => {
+            this.loading--
+          })
+        }
+        reader.readAsBinaryString(file)
       }
-      this.loading = true
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const pdfParser = window['pdfjs-dist/build/pdf']
-        const loadingTask = pdfParser.getDocument({data: e.target.result})
-        loadingTask.promise.then((pdf) => {
-          this.importData(pdf)
-        }).catch((e) => {
-          this.log('Import ERROR:', { e })
-          alert('Unexpected error, please retry...')
-        }).finally(() => {
-          this.file = null
-          this.loading = false
-        })
-      }
-      reader.readAsBinaryString(this.file)
+      this.files = []
     },
     async importData(pdf) {
       this.log('Imported PDF:', pdf)
