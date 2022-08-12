@@ -8,7 +8,7 @@
   >
     <template #activator="{ on }">
       <TheTextInput
-        v-model="computedDateFormattedMomentjs"
+        :value="formattedDate"
         :label="label"
         :placeholder="placeholder"
         :rules="rules"
@@ -24,7 +24,7 @@
       />
     </template>
     <v-date-picker
-      v-model="date"
+      :value="value"
       :min="minDate || ''"
       :max="maxDate || ''"
       no-title
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import FormatDateMixin from '~/mixins/common/FormatDateMixin'
 import TheTextInput from "~/components/input/TheTextInput";
 export default {
@@ -87,24 +88,14 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    date: ''
   }),
   computed: {
-    modifiableDate: {
-      get () {
-        return this.value
-      },
-      set (val) {
-        this.change(val)
+    formattedDate () {
+      if (!this.value) {
+        return ''
       }
-    },
-    computedDateFormattedMomentjs () {
-      return this.date ? this.formatDate(this.date) : ''
-    }
-  },
-  mounted() {
-    if (this.value) {
-      this.date = this.value
+      const format = this.onlyMonth? 'YYYY/MM' : 'YYYY/MM/DD'
+      return moment(this.value).format(format)
     }
   },
   methods: {
