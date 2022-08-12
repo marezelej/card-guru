@@ -35,27 +35,27 @@ export default {
       },
       headers: [
         {
-          text: this.$t('Title'),
+          text: this.$t('Título'),
           value: 'title',
         },
         {
-          text: this.$t('Account'),
+          text: this.$t('Cuenta'),
           value: 'account.title',
         },
         {
-          text: this.$t('Date'),
+          text: this.$t('Fecha'),
           value: 'date',
         },
         {
-          text: this.$t('Period'),
+          text: this.$t('Período'),
           value: 'period',
         },
         {
-          text: this.$t('Amount (AR$)'),
+          text: this.$t('Monto (AR$)'),
           value: 'amountArs',
         },
         {
-          text: this.$t('Fees'),
+          text: this.$t('Cuota / Total'),
           value: 'feeInfo',
         },
       ]

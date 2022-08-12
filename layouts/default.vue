@@ -47,12 +47,12 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: this.$t('Home'),
+          title: this.$t('Inicio'),
           to: '/',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: this.$t('Expenses'),
+          title: this.$t('Gastos'),
           to: '/expenses',
         },
       ],

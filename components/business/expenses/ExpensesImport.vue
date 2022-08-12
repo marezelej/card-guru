@@ -2,7 +2,7 @@
   <v-file-input
     v-model="files"
     :loading="loading > 0"
-    :label="$t('Load expenses file')"
+    :label="$t('Importar resumen de tarjeta')"
     multiple
     @change="loadFile"
   />

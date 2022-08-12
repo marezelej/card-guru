@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <h1>{{ $t('Expenses') }}</h1>
+        <h1>{{ $t('Gastos') }}</h1>
       </v-col>
       <v-col>
         <ExpensesImport />
