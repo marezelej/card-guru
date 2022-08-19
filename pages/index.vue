@@ -22,7 +22,7 @@ export default {
   components: {TheMonthSelector, NextMonthsView, MonthlyView},
   data() {
     return {
-        today: moment().subtract(1, 'month').format('y-MM-DD')
+        today: moment().format('YYYY-MM-DD')
     }
   },
   mounted() {

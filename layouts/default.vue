@@ -51,9 +51,14 @@ export default {
           to: '/',
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: this.$t('Gastos'),
-          to: '/expenses',
+          icon: 'mdi-credit-card-outline',
+          title: this.$t('Gastos de tarjeta'),
+          to: '/expenses/card',
+        },
+        {
+          icon: 'mdi-cash',
+          title: this.$t('Gastos fijos'),
+          to: '/expenses/fixed',
         },
       ],
       title: 'Card Guru',

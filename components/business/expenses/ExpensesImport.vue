@@ -4,6 +4,7 @@
     :loading="loading > 0"
     :label="$t('Importar resumen de tarjeta')"
     multiple
+    hide-details
     @change="loadFile"
   />
 </template>
@@ -63,12 +64,12 @@ export default {
       const items = service.import(lines)
       this.log('Imported ITEMS:', items)
       for (const item of items) {
-        if (this.$store.state.expenses.list.find(expense => expense.id === item.id)) {
+        if (this.$store.state.expenses.cardList.find(expense => expense.id === item.id)) {
           alert(this.$t('Some items are already loaded!'))
           return
         }
       }
-      this.$store.commit('expenses/add', items)
+      this.$store.commit('expenses/addCard', items)
     },
     log(msg, payload) {
       if (this.enableLog) {

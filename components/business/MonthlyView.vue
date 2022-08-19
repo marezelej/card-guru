@@ -34,7 +34,7 @@ export default {
       const today = moment(this.date).format('YYYY-MM')
       const accounts = {}
       let totalArs = 0
-      this.$store.state.expenses.list
+      this.$store.state.expenses.cardList
         .filter(expense => moment(expense.period.date).format('YYYY-MM') === today)
         .forEach(expense => {
           accounts[expense.account.id] = accounts[expense.account.id] || {

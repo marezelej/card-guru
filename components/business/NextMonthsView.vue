@@ -34,7 +34,7 @@ export default {
   computed: {
     periodExpenses() {
       const periodKey = moment(this.date).format('YYYY-MM')
-      return this.$store.state.expenses.list
+      return this.$store.state.expenses.cardList
         .filter(expense => moment(expense.period.date).format('YYYY-MM') === periodKey)
     },
     months() {

@@ -17,6 +17,13 @@
     <template #[`item.feeInfo`]="{ item }">
       {{ item.feeNumber }} / {{ item.totalFees }}
     </template>
+    <template #[`item.actions`]="{ item }">
+      <v-row>
+        <v-col>
+          <v-icon title="Borrar" @click="clickDelete(item)">mdi-delete</v-icon>
+        </v-col>
+      </v-row>
+    </template>
   </TheFilterTable>
 </template>
 
@@ -58,6 +65,10 @@ export default {
           text: this.$t('Cuota / Total'),
           value: 'feeInfo',
         },
+        {
+          text: this.$t('Acciones'),
+          value: 'actions',
+        },
       ]
     }
   },
@@ -65,10 +76,15 @@ export default {
     items() {
       const start = (this.pageInfo.page - 1) * this.pageInfo.itemsPerPage
       const end = start + this.pageInfo.itemsPerPage
-      return this.$store.state.expenses.list.slice(start, end)
+      return this.$store.state.expenses.cardList.slice(start, end)
     },
     total() {
-      return this.$store.state.expenses.list.length
+      return this.$store.state.expenses.cardList.length
+    }
+  },
+  methods: {
+    clickDelete(item) {
+      this.$store.commit('expenses/deleteCard', item)
     }
   }
 }
