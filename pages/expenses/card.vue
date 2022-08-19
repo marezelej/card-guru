@@ -6,26 +6,26 @@
       </v-col>
       <v-col>
         <v-row align="center" justify="center" class="pt-3 mr-0">
-          <ExpensesImport class="mr-2 mt-0" />
+          <CardExpensesImport class="mr-2 mt-0" />
           <CreateCardExpenseModal />
         </v-row>
       </v-col>
     </v-row>
     <v-row justify="center" align="center">
       <v-col cols="12">
-        <ExpensesTable />
+        <CardExpensesTable />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import ExpensesTable from "~/components/business/expenses/ExpensesTable";
-import ExpensesImport from "~/components/business/expenses/ExpensesImport";
+import CardExpensesTable from "~/components/business/expenses/card/CardExpensesTable";
+import CardExpensesImport from "~/components/business/expenses/card/CardExpensesImport";
 import CreateCardExpenseModal from "~/components/business/expenses/card/CreateCardExpenseDialog";
 export default {
   name: 'ExpensesCardPage',
-  components: {CreateCardExpenseModal, ExpensesTable, ExpensesImport},
+  components: {CreateCardExpenseModal, CardExpensesTable, CardExpensesImport},
   mounted() {
     this.$store.commit('expenses/load')
   }

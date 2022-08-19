@@ -31,7 +31,7 @@
 import TheFilterTable from "~/components/tables/TheFilterTable";
 import FormatDateMixin from "~/mixins/common/FormatDateMixin";
 export default {
-  name: "ExpensesTable",
+  name: "CardExpensesTable",
   components: {TheFilterTable},
   mixins: [FormatDateMixin],
   data() {

@@ -12,7 +12,7 @@
 <script>
 import ImportService from "~/services/import/ImportService";
 export default {
-  name: 'ExpensesImport',
+  name: 'CardExpensesImport',
   data() {
     return {
       loading: 0,
