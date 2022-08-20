@@ -11,7 +11,14 @@
         :color="account.color"
         class="mb-1"
       >
-        MIN. $ {{ account.totalMinArs.toFixed(2) }} / TOTAL AR$ {{ account.totalArs.toFixed(2) }} (% {{ account.quote.toFixed(2) }})
+        <v-row>
+          <v-col cols="10">
+            MIN. $ {{ account.totalMinArs.toFixed(2) }} / TOTAL AR$ {{ account.totalArs.toFixed(2) }} (% {{ account.quote.toFixed(2) }})
+          </v-col>
+          <v-col v-if="!['SUM', 'PENDING'].includes(account.id)" cols="2" class="text-right">
+            <v-simple-checkbox title="Pagado" :value="account.isPayed" @input="handleCheckPayed(account)"/>
+          </v-col>
+        </v-row>
       </TheInfoCard>
     </v-card-text>
   </v-card>
@@ -29,19 +36,27 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      payedAccounts: []
+    }
+  },
   computed: {
+    periodKey() {
+      return moment(this.date).format('YYYY-MM')
+    },
     accounts() {
-      const today = moment(this.date).format('YYYY-MM')
       const accounts = {}
       let totalArs = 0
       this.$store.state.expenses.cardList
-        .filter(expense => moment(expense.period.date).format('YYYY-MM') === today)
+        .filter(expense => moment(expense.period.date).format('YYYY-MM') === this.periodKey)
         .forEach(expense => {
           accounts[expense.account.id] = accounts[expense.account.id] || {
             ...expense.account,
             totalArs: 0,
             totalMinArs: expense.period.minArs,
             quote: 0,
+            isPayed: this.$store.state.expenses.payedAccounts.includes(this.periodKey + expense.account.id),
           }
           accounts[expense.account.id].totalArs += expense.amountArs
           totalArs += expense.amountArs
@@ -50,15 +65,35 @@ export default {
         account.quote = account.totalArs * 100 / totalArs
       })
       const result = orderBy(Object.values(accounts), ['quote'], ['desc'])
-      result.push({
+      const extra = []
+      extra.push({
         id: 'SUM',
-        title: 'TOTAL',
-        color: 'secondary',
+        title: 'Total',
+        color: 'blue',
         totalArs,
+        pendingTotalArs: result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalArs, 0),
         totalMinArs: result.reduce((sum, account) => sum + account.totalMinArs, 0),
         quote: 100.00,
       })
+      const pendingTotalArs = result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalArs, 0)
+      extra.push({
+        id: 'PENDING',
+        title: 'Pendiente',
+        color: 'indigo',
+        totalArs: pendingTotalArs,
+        totalMinArs: result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalMinArs, 0),
+        quote: pendingTotalArs * 100 / totalArs,
+      })
+      result.push(...extra)
       return result
+    },
+  },
+  methods: {
+    handleCheckPayed(account) {
+      this.$store.commit('expenses/setPayed', {
+        payKey: this.periodKey + account.id,
+        isPayed: !account.isPayed
+      })
     }
   }
 }

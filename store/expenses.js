@@ -2,15 +2,12 @@ export const state = () => ({
   loaded: false,
   cardList: [],
   fixedList: [],
+  payedAccounts: [],
   version: 1,
 })
 
 function dbStore(state) {
-  localStorage.setItem('expenses', JSON.stringify({
-    version: state.version,
-    cardList: state.cardList,
-    fixedList: state.fixedList,
-  }))
+  localStorage.setItem('expenses', JSON.stringify(state))
 }
 
 export const mutations = {
@@ -20,6 +17,14 @@ export const mutations = {
   },
   deleteCard(state, item) {
     state.cardList = state.cardList.filter(e => e !== item)
+    dbStore(state)
+  },
+  setPayed(state, { payKey, isPayed }) {
+    if (isPayed) {
+      state.payedAccounts.push(payKey)
+    } else {
+      state.payedAccounts = state.payedAccounts.filter(key => key !== payKey)
+    }
     dbStore(state)
   },
   load(state) {
@@ -32,8 +37,9 @@ export const mutations = {
         } else {
           state.cardList = expenses.cardList
           state.fixedList = expenses.fixedList
+          state.payedAccounts = expenses.payedAccounts
         }
       }
     }
-  }
+  },
 }
