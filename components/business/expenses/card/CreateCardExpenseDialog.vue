@@ -21,16 +21,16 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col sm="3" cols="12">
+            <v-col sm="3" cols="6">
               <TheDateInput v-model="form.period" required label="Período" only-month :clearable="false" />
             </v-col>
-            <v-col sm="3" cols="12">
+            <v-col sm="3" cols="6">
               <TheDateInput v-model="form.date" required label="Fecha" :clearable="false" />
             </v-col>
-            <v-col sm="3" cols="12">
+            <v-col sm="3" cols="6">
               <v-text-field v-model.number="form.feeNumber" :rules="[required]" required type="number" min="1" label="Cuota N°" />
             </v-col>
-            <v-col sm="3" cols="12">
+            <v-col sm="3" cols="6">
               <v-text-field v-model.number="form.totalFees" :rules="[required]" required type="number" min="1" label="N° total de cuotas" />
             </v-col>
           </v-row>
