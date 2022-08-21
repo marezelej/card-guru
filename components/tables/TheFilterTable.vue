@@ -1,7 +1,6 @@
 <template>
   <v-data-table
     :options.sync="options"
-    :server-items-length="total"
     :headers="headers"
     :loading-text="$t('loading')"
     :no-data-text="$t(noDataText)"
