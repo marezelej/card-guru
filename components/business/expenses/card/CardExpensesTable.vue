@@ -24,6 +24,11 @@
       <v-row>
         <v-col>
           <v-icon title="Borrar" @click="clickDelete(item)">mdi-delete</v-icon>
+          <CreateCardExpenseModal :duplicate="item">
+            <template #activator="{on}">
+              <v-icon title="Duplicar" v-on="on">mdi-content-copy</v-icon>
+            </template>
+          </CreateCardExpenseModal>
         </v-col>
       </v-row>
     </template>
@@ -33,9 +38,10 @@
 <script>
 import TheFilterTable from "~/components/tables/TheFilterTable";
 import FormatDateMixin from "~/mixins/common/FormatDateMixin";
+import CreateCardExpenseModal from "~/components/business/expenses/card/CreateCardExpenseDialog";
 export default {
   name: "CardExpensesTable",
-  components: {TheFilterTable},
+  components: {CreateCardExpenseModal, TheFilterTable},
   mixins: [FormatDateMixin],
   data() {
     return {

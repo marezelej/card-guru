@@ -7,7 +7,7 @@
       <TheInfoCard
         v-for="account in accounts"
         :key="'account_' + account.id"
-        :title="account.title + ' - $' + account.totalMinArs.toFixed(2)"
+        :title="account.title + ' - $' + account.totalArs.toFixed(2)"
         :color="account.color"
         class="mb-1"
       >

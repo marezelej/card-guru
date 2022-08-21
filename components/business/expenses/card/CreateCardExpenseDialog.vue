@@ -1,7 +1,9 @@
 <template>
   <v-dialog :value="show" persistent width="800" @input="handleShow">
     <template #activator="{on}">
-      <v-btn v-on="on">Nuevo</v-btn>
+      <slot name="activator" v-bind="{on}">
+        <v-btn v-on="on">Nuevo</v-btn>
+      </slot>
     </template>
     <v-card>
       <v-card-title>Nuevo gasto de tarjeta</v-card-title>
@@ -54,22 +56,16 @@ import TheDateInput from "~/components/input/TheDateInput";
 export default {
   name: "CreateCardExpenseModal",
   components: {TheDateInput},
+  props: {
+    duplicate: {
+      type: Object,
+      default: null
+    }
+  },
   data() {
-    const clearForm = () => ({
-      title: '',
-      date: moment().format('YYYY-MM-DD'),
-      type: 'manual',
-      account: null,
-      period: moment().format('YYYY-MM-DD'),
-      expirationDate: moment().format('YYYY-MM-DD'),
-      amountArs: 0,
-      feeNumber: 1,
-      totalFees: 1,
-    })
     return {
       show: false,
-      clearForm,
-      form: clearForm(),
+      form: this.cleanForm(),
       required: val => !!val || 'Campo obligatorio'
     }
   },
@@ -95,10 +91,32 @@ export default {
     }
   },
   methods: {
+    cleanForm() {
+      const dateFormat = 'YYYY-MM-DD'
+      if (this.duplicate !== null) {
+        return {
+          ...this.duplicate,
+          date: moment(this.duplicate.date).format(dateFormat),
+          period: moment(this.duplicate.period.date).format(dateFormat),
+          expirationDate: moment(this.duplicate.period.expirationDate).format(dateFormat),
+        }
+      }
+      return {
+        title: '',
+        date: moment().format(dateFormat),
+        type: 'manual',
+        account: null,
+        period: moment().format(dateFormat),
+        expirationDate: moment().format(dateFormat),
+        amountArs: 0,
+        feeNumber: 1,
+        totalFees: 1,
+      }
+    },
     handleShow() {
       this.show = !this.show
       if (this.show) {
-        this.form = this.clearForm()
+        this.form = this.cleanForm()
       }
     },
     clickSave() {
