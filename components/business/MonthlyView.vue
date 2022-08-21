@@ -7,18 +7,23 @@
       <TheInfoCard
         v-for="account in accounts"
         :key="'account_' + account.id"
-        :title="account.title"
+        :title="account.title + ' - $' + account.totalMinArs.toFixed(2)"
         :color="account.color"
         class="mb-1"
       >
         <v-row>
           <v-col cols="10">
-            MIN. $ {{ account.totalMinArs.toFixed(2) }} / TOTAL AR$ {{ account.totalArs.toFixed(2) }} (% {{ account.quote.toFixed(2) }})
+            MIN: ${{ account.totalMinArs.toFixed(2) }} (%{{ account.quote.toFixed(2) }}) - VTO: {{ account.expirationDate }}
           </v-col>
-          <v-col v-if="!['SUM', 'PENDING'].includes(account.id)" cols="2" class="text-right">
+          <v-col cols="2" class="text-right">
             <v-simple-checkbox title="Pagado" :value="account.isPayed" @input="handleCheckPayed(account)"/>
           </v-col>
         </v-row>
+      </TheInfoCard>
+      <TheInfoCard
+        color="blue"
+      >
+        TOTAL: ${{ totalArs.toFixed(2) }} - MIN: ${{ minArs.toFixed(2) }} - PENDIENTE: ${{ pendingArs.toFixed(2) }}
       </TheInfoCard>
     </v-card-text>
   </v-card>
@@ -42,56 +47,46 @@ export default {
     }
   },
   computed: {
-    periodKey() {
+    periodDate() {
       return moment(this.date).format('YYYY-MM')
     },
     accounts() {
       const accounts = {}
       let totalArs = 0
       this.$store.state.expenses.cardList
-        .filter(expense => moment(expense.period.date).format('YYYY-MM') === this.periodKey)
+        .filter(expense => moment(expense.period.date).format('YYYY-MM') === this.periodDate)
         .forEach(expense => {
-          accounts[expense.account.id] = accounts[expense.account.id] || {
+          const accountKey = expense.account.id + moment(expense.period.expirationDate).format('MM-DD')
+          accounts[accountKey] = accounts[accountKey] || {
             ...expense.account,
             totalArs: 0,
             totalMinArs: expense.period.minArs,
             quote: 0,
-            isPayed: this.$store.state.expenses.payedAccounts.includes(this.periodKey + expense.account.id),
+            expirationDate: moment(expense.period.expirationDate).format('MM/DD'),
+            isPayed: this.$store.state.expenses.payedAccounts.includes(this.periodDate + expense.account.id),
           }
-          accounts[expense.account.id].totalArs += expense.amountArs
+          accounts[accountKey].totalArs += expense.amountArs
           totalArs += expense.amountArs
         })
       Object.values(accounts).forEach(account => {
         account.quote = account.totalArs * 100 / totalArs
       })
-      const result = orderBy(Object.values(accounts), ['quote'], ['desc'])
-      const extra = []
-      extra.push({
-        id: 'SUM',
-        title: 'Total',
-        color: 'blue',
-        totalArs,
-        pendingTotalArs: result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalArs, 0),
-        totalMinArs: result.reduce((sum, account) => sum + account.totalMinArs, 0),
-        quote: 100.00,
-      })
-      const pendingTotalArs = result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalArs, 0)
-      extra.push({
-        id: 'PENDING',
-        title: 'Pendiente',
-        color: 'indigo',
-        totalArs: pendingTotalArs,
-        totalMinArs: result.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalMinArs, 0),
-        quote: pendingTotalArs * 100 / totalArs,
-      })
-      result.push(...extra)
-      return result
+      return orderBy(Object.values(accounts), ['quote'], ['desc'])
+    },
+    totalArs() {
+      return this.accounts.reduce((sum, account) => sum + account.totalArs, 0)
+    },
+    minArs() {
+      return this.accounts.reduce((sum, account) => sum + account.totalMinArs, 0)
+    },
+    pendingArs() {
+      return this.accounts.filter(a => !a.isPayed).reduce((sum, account) => sum + account.totalArs, 0)
     },
   },
   methods: {
     handleCheckPayed(account) {
       this.$store.commit('expenses/setPayed', {
-        payKey: this.periodKey + account.id,
+        payKey: this.periodDate + account.id,
         isPayed: !account.isPayed
       })
     }

@@ -11,6 +11,9 @@
     <template #[`item.period`]="{ item }">
       {{ formatPeriod(item.period.date) }}
     </template>
+    <template #[`item.expirationDate`]="{ item }">
+      {{ formatDate(item.period.expirationDate) }}
+    </template>
     <template #[`item.amountArs`]="{ item }">
       {{ item.amountArs < 0? '-$' + (-1 * item.amountArs).toFixed(2) : '$' + item.amountArs.toFixed(2) }}
     </template>
@@ -56,6 +59,10 @@ export default {
         {
           text: this.$t('Período'),
           value: 'period',
+        },
+        {
+          text: this.$t('Vencimiento'),
+          value: 'expirationDate',
         },
         {
           text: this.$t('Monto (AR$)'),

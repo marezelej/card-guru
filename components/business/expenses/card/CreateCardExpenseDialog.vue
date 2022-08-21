@@ -13,19 +13,22 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col sm="6" cols="12">
+            <v-col sm="4" cols="12">
               <v-combobox v-model="form.account" :rules="[required]" item-value="id" item-text="title" :items="accounts" required label="Cuenta" return-object />
             </v-col>
-            <v-col sm="6" cols="12">
+            <v-col sm="4" cols="12">
               <v-text-field v-model.number="form.amountArs" :rules="[required]" required type="number" min="0" label="Monto (ARS)" />
+            </v-col>
+            <v-col sm="4" cols="12">
+              <TheDateInput v-model="form.expirationDate" label="Vencimiento" :clearable="false" />
             </v-col>
           </v-row>
           <v-row>
             <v-col sm="3" cols="6">
-              <TheDateInput v-model="form.period" required label="Período" only-month :clearable="false" />
+              <TheDateInput v-model="form.period" label="Período" only-month :clearable="false" />
             </v-col>
             <v-col sm="3" cols="6">
-              <TheDateInput v-model="form.date" required label="Fecha" :clearable="false" />
+              <TheDateInput v-model="form.date" label="Fecha" :clearable="false" />
             </v-col>
             <v-col sm="3" cols="6">
               <v-text-field v-model.number="form.feeNumber" :rules="[required]" required type="number" min="1" label="Cuota N°" />
@@ -58,6 +61,7 @@ export default {
       type: 'manual',
       account: null,
       period: moment().format('YYYY-MM-DD'),
+      expirationDate: moment().format('YYYY-MM-DD'),
       amountArs: 0,
       feeNumber: 1,
       totalFees: 1,
@@ -109,13 +113,13 @@ export default {
           color: 'secondary'
         }
       }
-      const periodDate = moment(this.form.period)
       const expense = {
         ...this.form,
         account,
         period: {
-          id: periodDate.format('YYYY-MM'),
-          date: periodDate.toDate(),
+          id: moment(this.form.period).format('YYYY-MM'),
+          date: moment(this.form.period).toDate(),
+          expirationDate: moment(this.form.expirationDate).toDate(),
           minArs: 0
         }
       }

@@ -3,7 +3,7 @@ import {getDate, getNumber} from "~/services/import/adapters/utils";
 
 export default class ImportAdapter {
   account = {id: null, title: null, color: 'primary'}
-  period = {id: null, date: null, minArs: 0}
+  period = {id: null, date: null, expirationDate: null, minArs: 0}
   items = []
 
   runImport(lines) {
@@ -29,6 +29,10 @@ export default class ImportAdapter {
 
   setPeriodMinArs(strMinArs) {
     this.period.minArs = getNumber(strMinArs)
+  }
+
+  setPeriodExpirationDate(strDate) {
+    this.period.expirationDate = getDate(strDate).toDate()
   }
 
   pushItem(title, date, amountArs, feeNumber, totalFees) {
